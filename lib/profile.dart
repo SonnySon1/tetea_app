@@ -1,8 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:dio/dio.dart';
 
-
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  // inisialisasi nilai variable
+  final Dio dio = Dio();
+  final storage = FlutterSecureStorage();
+  String token = '';
+  String user_name = '';
+
+
+  // initState
+  @override
+  void initState() {
+    super.initState();
+    getDataUser();
+  }
+
+  // panggi data dari storage
+  Future<String?> getDataUser() async {
+    final token_storage     = await storage.read(key: 'token');
+    final user_name_storage = await  storage.read(key: 'user_name');
+
+    setState(() {
+      token = token_storage ?? '';
+      user_name = user_name_storage ?? '';
+    });
+  }
+
+
+  // future logout
+  Future<void> logout() async {
+    await dio.get('http://192.168.43.247:8000/api/signout', options: Options(
+      headers: {'Authorization': 'Bearer ' + token})
+    );
+
+    await storage.delete(key: 'token');
+    await storage.delete(key: 'user_id');
+    await storage.delete(key: 'user_name');
+
+    Navigator.pushReplacementNamed(context, '/signin');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +88,7 @@ class Profile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Userxxxxxxx",
+                            user_name,
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff3E3C3C)),
                           ),
                           Padding(padding: EdgeInsets.only(left: 10)),
@@ -61,7 +106,8 @@ class Profile extends StatelessWidget {
                       Padding(padding: EdgeInsets.only(top: 50)),
                       ElevatedButton(
                         onPressed: (){
-                          Navigator.pushReplacementNamed(context, '/signin');
+                          // Navigator.pushReplacementNamed(context, '/signin');
+                          logout();
                         }, 
                         style: ElevatedButton.styleFrom(backgroundColor: Color(0xff99BC85)),
                         child: Text("Sign Out", style: TextStyle(color: Colors.white),),

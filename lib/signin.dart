@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Signin extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class _SigninState extends State<Signin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final Dio _dio = Dio();
+  final storage = FlutterSecureStorage();
+
   String _errorMessage = '';
 
   // deklarasi fungsi
@@ -32,10 +35,13 @@ class _SigninState extends State<Signin> {
           if (response.statusCode == 200) {
             final data = response.data['data'];
             final token = data['token'];
-            final user = data['user'];
+            final user_id = data['user']['id'];
+            final user_name = data['user']['name'];
 
-            print('Token: $token');
-            print('User: $user');
+            // simpan data ke storage
+            await storage.write(key: 'token', value: token);
+            await storage.write(key: 'user_id', value: user_id.toString());
+            await storage.write(key: 'user_name', value: user_name);
 
             Navigator.pushReplacementNamed(context, '/main');
           }
