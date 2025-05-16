@@ -64,6 +64,24 @@ class _HomeState extends State<Home> {
   }
 
 
+  // Feature delete data menu
+  Future<void> deleteMenu(int id) async {
+    print(id);
+    try {
+      await dio.get('http://192.168.43.247:8000/api/menu/delete/$id', options: Options(
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        }
+      ));
+
+      setState(() {
+        getDataMenu();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
 
   @override
@@ -111,9 +129,11 @@ class _HomeState extends State<Home> {
               // each data
               ...data_menus.map((data_menu) => 
                 CardProduct(
-                    title: data_menu['name'], 
+                    id: data_menu['id'], 
+                    name: data_menu['name'], 
                     price: data_menu['price'].toString(), 
-                    description: data_menu['description']
+                    description: data_menu['description'],
+                    onDelete: () => deleteMenu(data_menu['id'])
                 )
               ),
 
@@ -128,11 +148,12 @@ class _HomeState extends State<Home> {
 
 // card product
 class CardProduct extends StatelessWidget {
-  const CardProduct({this.title = '', this.price = '', this.description = ''});
-  final String title;
+  const CardProduct({this.id = 0, this.name = '', this.price = '', this.description = '', required this.onDelete});
+  final int id;
+  final String name;
   final String price;
   final String description;
-
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +165,22 @@ class CardProduct extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(onPressed: (){}, icon: Icon(Icons.edit, size: 14, color: Color(0xff99BC85),) ),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.delete, size: 14, color: Colors.red,) ),
+                    IconButton(onPressed: (){
+                     Navigator.pushNamed(
+                      context,
+                      '/editmenu',
+                      arguments: {
+                        'menu_id': id,
+                        'name': name,
+                        'price': price,
+                        'description': description,
+                      },
+                    );
+
+                    }, icon: Icon(Icons.edit, size: 14, color: Color(0xff99BC85),) ),
+                    IconButton(onPressed: (){
+                      onDelete();
+                    }, icon: Icon(Icons.delete, size: 14, color: Colors.red,) ),
                   ],
                 ),
                 Card(
@@ -161,7 +196,7 @@ class CardProduct extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff3E3C3C)),),
+                              Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xff3E3C3C)),),
                               Text(
                               description,
                               style: TextStyle(

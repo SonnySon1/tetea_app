@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './home.dart';
 import './signin.dart';
 import './newmenu.dart';
+import './editmenu.dart';
 import './profile.dart';
 
 void main(List<String> args) {
@@ -14,6 +15,7 @@ void main(List<String> args) {
         '/main'   : (context) => Main(),
         '/home'   : (context) => Home(),
         '/newmenu': (context) => Newmenu(),
+        '/editmenu': (context) => Editmenu(),
         '/profile': (context) => Home(),
       },
     )
