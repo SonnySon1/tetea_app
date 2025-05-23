@@ -57,9 +57,7 @@ class _HomeState extends State<Home> {
       });
 
     } catch (e) {
-      setState(() {
-        data_menus = [];
-      });
+       print(e);
     }
   }
 

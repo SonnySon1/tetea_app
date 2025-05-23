@@ -76,7 +76,7 @@ class _NewmenuState extends State<Newmenu> {
       );
 
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, '/main'); 
+        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 422) {
@@ -108,7 +108,6 @@ class _NewmenuState extends State<Newmenu> {
     }
     catch (e) {
       print(e);
-      print("ke catch");
     }
   }
 

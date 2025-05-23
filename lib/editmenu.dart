@@ -101,7 +101,7 @@ class _EditmenuState extends State<Editmenu> {
       );
 
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, '/main'); 
+        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 422) {
