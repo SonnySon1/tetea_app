@@ -1,16 +1,24 @@
-# te_tea
+# 📱 TETEA App
 
-A new Flutter project.
+**TETEA App** is the client-side (frontend) application that connects with the [TETEA API](https://github.com/SonnySon1/tetea_api). This application provides users with a modern interface to interact with the system's features, including authentication, data viewing, and various user operations.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Key Features
 
-A few resources to get you started if this is your first Flutter project:
+- User login and authentication
+- Responsive and intuitive user interface
+- Integration with TETEA API for real-time data
+- Role-based access (e.g., admin, user)
+- Smooth navigation and user experience
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ⚙️ Built With
+
+- **Flutter**
+- **Dart**
+- **Dio**
+- **image_picker** 
+- **Secure Storage / LocalStorage**
+- **API integration with Laravel (TETEA API)**
